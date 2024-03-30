@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TagStore = SearchTag_controls.TagStore;
 
 namespace ImageTagging.Classes
 {
@@ -55,10 +56,8 @@ namespace ImageTagging.Classes
             {
                 if (_image == null)
                     LoadImage();
-
                 _thumbnail = createThumbnail(_image);
             }
-
             return _thumbnail;
         }
 
@@ -94,15 +93,25 @@ namespace ImageTagging.Classes
 
         private System.Drawing.Image LoadImage()
         {
-            var stream = File.OpenRead(ImageName);
-            _image = System.Drawing.Image.FromStream(stream);
-            return _image;
+            using (var stream = File.OpenRead(ImageName))
+                this._image = System.Drawing.Image.FromStream(stream);
+            return this._image;
         }
 
+        public void freeImageMemory()
+        {
+            if (this._image != null)
+            { 
+                this._image.Dispose();
+                this._image = null;
+            }
+        }
         internal void Dispose()
         {
-            _image.Dispose();
-            _thumbnail.Dispose();
+            if (this._image != null)
+                _image.Dispose();
+            if (this._thumbnail != null)
+                _thumbnail.Dispose();
             //ThumbNail.Dispose();
             //Image.Dispose();
             //ImageSessionID.Dispose();

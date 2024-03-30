@@ -21,7 +21,7 @@ namespace ImageTagging.Classes
             active = true;
             }   
         }
-
+        public int Page { get { return current_page; } }
         private int _pager_limit = 24;
         private int current_page = 0;
         private int last_page = 0;
@@ -64,7 +64,7 @@ namespace ImageTagging.Classes
                 PagerImageInfo imagen_info = temp_pager[counter];
                 add_image_to_list(imagen_info, counter);
             }
-
+            this.current_page = 0;
 
         }
 

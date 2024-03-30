@@ -12,7 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>C:\Users\Neus\Desktop\imagetag\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -22,9 +22,16 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <SupportUrl>https://github.com/NeusZimmer/ImageTagging</SupportUrl>
+    <ErrorReportUrl>https://github.com/NeusZimmer/ImageTagging</ErrorReportUrl>
+    <ProductName>Image Tagging Alpha</ProductName>
+    <PublisherName>Neus Zimmerman</PublisherName>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <DisallowUrlActivation>true</DisallowUrlActivation>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.1</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -48,6 +55,18 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>ImageTaggingApp.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>05C83DF5CB7D64C0739A1471E99B43E74224FFE3</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>WindowsFormsApp1_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -77,15 +96,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddSubcategories.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddSubcategories.Designer.cs">
-      <DependentUpon>AddSubcategories.cs</DependentUpon>
-    </Compile>
     <Compile Include="Classes\ImageData.cs" />
     <Compile Include="Classes\ImagePager.cs" />
-    <Compile Include="Classes\TagStore.cs" />
     <Compile Include="Controls\SearchField.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -97,15 +109,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubForms\TextInput.cs">
+    <Compile Include="SubForms\CategoriesTemplateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SubForms\TextInput.Designer.cs">
-      <DependentUpon>TextInput.cs</DependentUpon>
+    <Compile Include="SubForms\CategoriesTemplateForm.Designer.cs">
+      <DependentUpon>CategoriesTemplateForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AddSubcategories.resx">
-      <DependentUpon>AddSubcategories.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ImageTagging.resx">
       <DependentUpon>ImageTagging.cs</DependentUpon>
     </EmbeddedResource>
@@ -119,8 +128,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="SubForms\TextInput.resx">
-      <DependentUpon>TextInput.cs</DependentUpon>
+    <EmbeddedResource Include="SubForms\CategoriesTemplateForm.resx">
+      <DependentUpon>CategoriesTemplateForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -132,6 +141,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="WindowsFormsApp1_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -142,6 +152,18 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\tag_files\persons.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\tag_files\background.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\tag_files\clothing.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\tag_files\hair-color.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

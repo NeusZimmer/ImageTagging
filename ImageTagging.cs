@@ -15,6 +15,8 @@ using ImageTagging.Classes;
 using SearchTag_controls;
 using Newtonsoft.Json;
 using ImageTagging.SubForms;
+//using TagStore = ImageTagging.Classes.TagStore;
+using TagStore = SearchTag_controls.TagStore;
 
 namespace ImageTaggingApp
 {
@@ -23,7 +25,9 @@ namespace ImageTaggingApp
         private List<ImageData> lista_imagenes = new List<ImageData>();
         private int thumbnail_size = 210;
         private int ImageSessionID = 0;
+        private TagStore TagStoreTemplate = new TagStore("MAIN");
         ImagePager Pager;
+
 
         /// Lista de colores a usar
         private System.Drawing.Color Selected = System.Drawing.Color.GreenYellow;
@@ -34,12 +38,13 @@ namespace ImageTaggingApp
             InitializeComponent();
         }
 
+
         private void ImageTagging_Load(object sender, EventArgs e)
         {
             panel_Image_preview.Visible = false;
             panel_Image_preview.Dock = System.Windows.Forms.DockStyle.Fill;
-            textBox_path.Text = "C:\\Users\\Neus\\Downloads";
-
+            textBox_path.Text = System.IO.Directory.GetCurrentDirectory();
+            txtCategoriesDir.Text= System.IO.Directory.GetCurrentDirectory();
             SearchTag_controls.SearchField campobusqueda = new SearchTag_controls.SearchField();
             campobusqueda.Dock = DockStyle.Top;
             //campobusqueda.Visible = false;
@@ -54,20 +59,20 @@ namespace ImageTaggingApp
             int categorias = 4;
             adjust_categories_table(categorias);
             add_categories_controls(categorias);
-
+            update_category_destinations();
         }
 
         public void add_categories_controls(int categorias)
         {
-            List<string> lista_tags = new List<string> { "female", "girl", "man", "couple", "female", "girl", "man", "couple", "female", "girl", "man", "couple", "female", "girl", "man", "couple" };
+            //List<string> lista_test_tags = new List<string> { "female", "girl", "man", "couple", "female", "girl", "man", "couple", "female", "girl", "man", "couple", "female", "girl", "man", "couple" };
 
             int Altura_Maxima = (int)tablaCategorias.Size.Height / categorias;
 
             for (int counter = 0; counter < categorias; counter++)
             {
-                SearchTag_controls.TagCategory tagCategory_test = CrearCategoria("PruebaCategoria", Altura_Maxima);
-                tagCategory_test.Add_Tags(lista_tags);
-                tagCategory_test.CategoryName = "Prueba de concepto:" + counter.ToString();
+                SearchTag_controls.TagCategory tagCategory_test = CrearCategoria("NewCategory" + counter.ToString(), Altura_Maxima);
+                //tagCategory_test.Add_Tags(lista_test_tags);
+                tagCategory_test.CategoryName = "Not Loaded:" + counter.ToString();
                 this.tablaCategorias.Controls.Add(tagCategory_test, 0, counter);
             }
         }
@@ -86,6 +91,7 @@ namespace ImageTaggingApp
             tagCategory2.MinimumSize = new System.Drawing.Size(100, 100);
             tagCategory2.MaximumSize = new System.Drawing.Size(0, height);
             tagCategory2.Name = Name;
+
             //tagCategory2.TabIndex = 0;
 
             return tagCategory2;
@@ -172,35 +178,36 @@ namespace ImageTaggingApp
                     imagen_seleccionada.Selected = true;
                 }
             }
-            else if (e.Button == MouseButtons.Right)
-            {
-                List<int> list_session_ids = Pager.get_active_ids_for_page();
-                foreach (int session_id in list_session_ids)
-                {
-                    ImageData datoimagen = lista_imagenes.Find(x => x.ImageSessionID == session_id);
-                    if (session_id == image_session_id)
-                        datoimagen.Selected = true;
-                    else
-                        datoimagen.Selected = false;
-                }
-                //Lo siguiente (mas rapido) o repintarlas completamente.
-                foreach (Control control in PanelImagenes.Controls)
-                {
-                    if (control.Name == panel_externo.Name) control.BackColor = Selected;
-                    else control.BackColor = UnSelected;
-                }
-            }
-            else if (e.Button == MouseButtons.Middle)
-            {
-                imagen_seleccionada.Selected = false;
-                Pager.hide_image(image_session_id);
-                panel_interno.Controls.Remove(imagebox);
-                panel_externo.Controls.Remove(panel_interno);
-                PanelImagenes.Controls.Remove(panel_externo);
-                imagebox.Dispose();
-                panel_interno.Dispose();
-                panel_externo.Dispose();
-            }
+            // Esto se ha pasado a un menu contextual
+            //else if (e.Button == MouseButtons.Right)
+            //{
+            //    List<int> list_session_ids = Pager.get_active_ids_for_page();
+            //    foreach (int session_id in list_session_ids)
+            //    {
+            //        ImageData datoimagen = lista_imagenes.Find(x => x.ImageSessionID == session_id);
+            //        if (session_id == image_session_id)
+            //            datoimagen.Selected = true;
+            //        else
+            //            datoimagen.Selected = false;
+            //    }
+            //    //Lo siguiente (mas rapido) o repintarlas completamente.
+            //    foreach (Control control in PanelImagenes.Controls)
+            //    {
+            //        if (control.Name == panel_externo.Name) control.BackColor = Selected;
+            //        else control.BackColor = UnSelected;
+            //    }
+            //}
+            //else if (e.Button == MouseButtons.Middle)
+            //{
+            //    imagen_seleccionada.Selected = false;
+            //    Pager.hide_image(image_session_id);
+            //    panel_interno.Controls.Remove(imagebox);
+            //    panel_externo.Controls.Remove(panel_interno);
+            //    PanelImagenes.Controls.Remove(panel_externo);
+            //    imagebox.Dispose();
+            //    panel_interno.Dispose();
+            //    panel_externo.Dispose();
+            //}
         }
         private void button12_Click(object sender, EventArgs e)
         {
@@ -238,6 +245,7 @@ namespace ImageTaggingApp
             pictureBox_Image_Preview.Image = selection.First().Image;
 
             panel_Image_preview.Visible = !panel_Image_preview.Visible;
+            pictureBox_Image_Preview.MaximumSize = panel_Image_preview.Size;
             PanelImagenes.Visible = !PanelImagenes.Visible;
             pictureBox_Image_Preview.MaximumSize = new Size(panel_Image_preview.Size.Width, panel_Image_preview.Size.Height);
         }
@@ -275,6 +283,10 @@ namespace ImageTaggingApp
             string filter = @"*.png";
             string[] fileEntries = Directory.GetFiles(textBox_path.Text, filter);
 
+            filter = @"*.jpg";
+            string[] fileEntries2 = Directory.GetFiles(textBox_path.Text, filter);
+
+            fileEntries=fileEntries.Concat(fileEntries2).ToArray();
             string filter2 = @"*.json";
             string[] json_fileEntries = Directory.GetFiles(textBox_path.Text, filter2);
 
@@ -313,6 +325,7 @@ namespace ImageTaggingApp
                 }
                 Pager = new ImagePager(lista_imagenes);
                 Pager.pager_limit = ((int)intPager_Limit.Value); // añadir a la inicializacion?
+                Pager.repagination();
                 List<int> list_session_ids = Pager.get_all_ids_for_page(0);
                 add_imagenes_to_panel_by_ids(list_session_ids);
             }
@@ -386,7 +399,7 @@ namespace ImageTaggingApp
 
             Panel_temp_ext.Name = "panel_exterior_" + DatosImagen.ImageSessionID.ToString();
             Panel_temp_ext.Size = new System.Drawing.Size(thumbnail_size + 8, thumbnail_size + 8);
-
+            Panel_temp_ext.ContextMenuStrip = this.contextMenuStrip1;
             if (DatosImagen.Selected)
                 Panel_temp_ext.BackColor = Selected;
             else
@@ -402,12 +415,14 @@ namespace ImageTaggingApp
             PictureBox Elemento = new System.Windows.Forms.PictureBox();
             Elemento.Name = "picture:" + DatosImagen.ImageSessionID.ToString();
             Elemento.Size = new System.Drawing.Size(thumbnail.Size.Width, thumbnail.Size.Height);
+            Elemento.Dock = DockStyle.Fill;
             Elemento.Location = new System.Drawing.Point(0, 0);
-            Elemento.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Normal;
+            //Elemento.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            Elemento.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             Elemento.Image = thumbnail;
 
             Elemento.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Elemento_Click);
-            Elemento.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Elemento_Click2);
+            //Elemento.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Elemento_Click2);
             Elemento.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(Elemento_MouseDoubleClick);
 
             Panel_temp_int.Controls.Add(Elemento);
@@ -417,23 +432,36 @@ namespace ImageTaggingApp
 
         #endregion
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btn_NextPage_Click(object sender, EventArgs e)
         {
             Eliminate_PanelImagenes_SubControls();
+            if (chk_MemorySaver.Checked)
+            {
+                List<int> Images_to_free_memory = Pager.get_active_ids_for_page();
+                foreach (int session_id in Images_to_free_memory)
+                {
+                    ImageData Image_to_free_memory = lista_imagenes.Find(x => x.ImageSessionID == session_id);
+                    Image_to_free_memory.freeImageMemory();
+                }
+            }
+
+            btn_NotUsed.Text = Pager.Page.ToString();
             Pager.next_page();
             List<int> list_active_ids=Pager.get_active_ids_for_page();
             add_imagenes_to_panel_by_ids(list_active_ids);
+            btn_NotUsed.Text = Pager.Page.ToString();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_PrevPage_Click(object sender, EventArgs e)
         {
             Eliminate_PanelImagenes_SubControls();
             Pager.previous_page();
             List<int> list_active_ids = Pager.get_active_ids_for_page();
             add_imagenes_to_panel_by_ids(list_active_ids);
+            btn_NotUsed.Text = Pager.Page.ToString();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btn_Repagination_Click(object sender, EventArgs e)
         {
             Eliminate_PanelImagenes_SubControls();
             //Faltaria hace dispose de las imagenes descargadas de memoria , De donde sacarlas? -> De la lista de inactivas.
@@ -452,6 +480,7 @@ namespace ImageTaggingApp
             Pager.repagination();
             List<int> list_active_ids = Pager.get_active_ids_for_page(0);
             add_imagenes_to_panel_by_ids(list_active_ids);
+            btn_NotUsed.Text = Pager.Page.ToString();
         }
 
         private void btn_PagerLimit_Click(object sender, EventArgs e)
@@ -474,14 +503,15 @@ namespace ImageTaggingApp
                         imageData.Tags.add_tag(list_of_active_tags,tagCategory1.Destination);
                     list_of_active_tags.Clear();
                 }
-                
-                //MessageBox.Show("You have clicked Ok Button list of tags:" + string.Join(" ",list_of_active_tags));
+
             }
         }
 
         private void btn_save_Click(object sender, EventArgs e)
         {
-            foreach (ImageData imageData in lista_imagenes.Where(x => x.Tags.TagList.Count > 0))
+            IEnumerable<ImageData> imagenes_a_salvar = lista_imagenes.Where(x => ((x.Tags.TagList.Count > 0) || x.Tags.haveChildren));
+
+            foreach (ImageData imageData in imagenes_a_salvar)
             {
                 string filename = Path.GetFileNameWithoutExtension( imageData.ImageName);
                 string filepath = Path.GetDirectoryName(imageData.ImageName); //ruta sin el fichero y sin el slash al final
@@ -492,7 +522,7 @@ namespace ImageTaggingApp
                 {
                     outputFile.Write(JsonConvert.SerializeObject(imageData.Tags));
                 }
-            //MessageBox.Show("Saved");
+
             }
 
         }
@@ -555,22 +585,225 @@ namespace ImageTaggingApp
             }
         }
 
-        private void button10_Click(object sender, EventArgs e)
+        private void btn_AddObjectToImg_Click(object sender, EventArgs e)
         {
             string nombre_objeto;
-            using (TextInput dlg = new TextInput("Add Object to Tag Template","Name of the object/Category"))
+            bool check = false;
+            string message = "If you continue, you will add a new object to the current selected images under its top level. Current Template and tags will not be modified,Are you sure?";
+            using (QuestionForm question = new QuestionForm("Add New Object to Selected Images",message ))
             {
-                if (dlg.ShowDialog() == DialogResult.OK)
+                //question.IsOnlyInformation();
+                DialogResult result = question.ShowDialog();
+                nombre_objeto = question.Result;
+                if (result == DialogResult.OK)
+                    check = true;
+
+            }
+            if (check)
+            {
+                List<ImageData> lista_seleccionadas = lista_imagenes.Where(x => x.Selected).ToList();
+                foreach (ImageData datosimagen in lista_seleccionadas)
                 {
-                    nombre_objeto = dlg.Result;
-                    List<ImageData> lista_seleccionadas = lista_imagenes.Where(x => x.Selected).ToList();
-                    foreach (ImageData datosimagen in lista_seleccionadas)
-                    {
-                        datosimagen.Tags.add_children(new TagStore(nombre_objeto));
-                    }
+                    TagStore test = new TagStore(nombre_objeto);
+                    datosimagen.Tags.add_children(test);
                 }
             }
         }
+        private void toolStripSelect_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem MenuItem = (ToolStripMenuItem)sender;
+            ContextMenuStrip MenuContext = (ContextMenuStrip)MenuItem.GetCurrentParent();
+            Control panel_externo = MenuContext.SourceControl;
+            Control panel_interno = panel_externo.Controls[0];
+            Control imagebox = panel_interno.Controls[0];
+
+            string[] subs = imagebox.Name.Split(':');
+            int image_session_id = int.Parse(subs[1]);
+            ImageData imagen_seleccionada = lista_imagenes.Find(result => result.ImageSessionID == image_session_id);
+
+
+            List<int> list_session_ids = Pager.get_active_ids_for_page();
+            foreach (int session_id in list_session_ids)
+            {
+                ImageData datoimagen = lista_imagenes.Find(x => x.ImageSessionID == session_id);
+                if (session_id == image_session_id)
+                    datoimagen.Selected = true;
+                else
+                    datoimagen.Selected = false;
+            }
+            //Lo siguiente (mas rapido) o repintarlas completamente.
+            foreach (Control control in PanelImagenes.Controls)
+            {
+                if (control.Name == panel_externo.Name) control.BackColor = Selected;
+                else control.BackColor = UnSelected;
+            }
+
+
+
+        }
+
+        private void toolStripHide_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem MenuItem = (ToolStripMenuItem)sender;
+            ContextMenuStrip MenuContext = (ContextMenuStrip)MenuItem.GetCurrentParent();
+            Control panel_externo = MenuContext.SourceControl;
+            Control panel_interno = panel_externo.Controls[0];
+            Control imagebox = panel_interno.Controls[0];
+
+            string[] subs = imagebox.Name.Split(':');
+            int image_session_id = int.Parse(subs[1]);
+            ImageData imagen_seleccionada = lista_imagenes.Find(result => result.ImageSessionID == image_session_id);
+
+            imagen_seleccionada.Selected = false;
+            Pager.hide_image(image_session_id);
+            panel_interno.Controls.Remove(imagebox);
+            panel_externo.Controls.Remove(panel_interno);
+            PanelImagenes.Controls.Remove(panel_externo);
+            imagebox.Dispose();
+            panel_interno.Dispose();
+            panel_externo.Dispose();
+        }
+
+
+        private void update_category_destinations()
+        {
+            foreach (TagCategory category in tablaCategorias.Controls.OfType<TagCategory>())
+            {
+                category.update_destinations(this.TagStoreTemplate.getObjects());
+            }
+        }
+
+
+        private void btn_TemplateTagStore_Click(object sender, EventArgs e)
+        {
+            using (CategoriesTemplateForm form1 = new CategoriesTemplateForm(this.TagStoreTemplate))
+            {
+                DialogResult confirmation=form1.ShowDialog();
+                if (DialogResult.OK == confirmation)
+                { 
+                    this.TagStoreTemplate =form1.Result;
+                    update_category_destinations();
+                }
+                
+            }
+
+        }
+
+        private void btn_ExtractTemplateTagStore_Click(object sender, EventArgs e)
+        {
+            List<ImageData> lista_seleccionadas = lista_imagenes.Where(x => x.Selected).ToList();
+            ImageData dato_imagen;
+            if (lista_seleccionadas.Count > 0)
+            {
+                dato_imagen = lista_seleccionadas.First();
+                using (CategoriesTemplateForm form1 = new CategoriesTemplateForm(dato_imagen.Tags))
+                {
+                    DialogResult confirmation = form1.ShowDialog();
+                    if (DialogResult.OK == confirmation)
+                    {
+                        this.TagStoreTemplate = form1.Result;
+                        update_category_destinations();
+                    }
+
+                }
+            }
+            else MessageBox.Show("Select an image");
+                
+        }
+
+        private void btn_ApplyTemplate_Click(object sender, EventArgs e)
+        {
+            //var test = delegado_Objetos(this.TagStoreTemplate);
+            bool check = false;
+            string message = "If you continue, you will apply the current template to all selected images. Current Template and tags will be lost,Are you sure?";
+            using (QuestionForm question = new QuestionForm("Apply Template to Selected Images", message))
+            {
+                question.IsOnlyInformation();
+                DialogResult result = question.ShowDialog();
+                if (result == DialogResult.OK)
+                    check = true;
+            }
+            if (check)
+            {
+                List<ImageData> lista_seleccionadas = lista_imagenes.Where(x => x.Selected).ToList();
+                foreach (ImageData datosimagen in lista_seleccionadas)
+                {
+                    datosimagen.Tags = this.TagStoreTemplate.Clone();
+                }
+            }
+        }
+
+        private void btn_categories_dir_Click(object sender, EventArgs e)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.InitialDirectory = txtCategoriesDir.Text;
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                txtCategoriesDir.Text = dialog.FileName;
+            }
+
+            string filter = @"*.txt";
+            string[] tag_fileEntries = Directory.GetFiles(txtCategoriesDir.Text, filter);
+
+            textBox1.Text = tag_fileEntries.Length > 0 ? string.Join("\r\n", tag_fileEntries) : "No tag files found";
+
+            if (tag_fileEntries.Length > 0)
+            {
+                foreach(TagCategory category in tablaCategorias.Controls.OfType<TagCategory>())
+                {
+                    category.ListOfFiles = tag_fileEntries.ToList();
+                }
+            }
+        }
+
+        private void btn_Export_Click(object sender, EventArgs e)
+        {
+            IEnumerable<ImageData> imagenes_a_salvar = lista_imagenes.Where(x => ((x.Tags.TagList.Count > 0) || x.Tags.haveChildren));
+
+            foreach (ImageData imageData in imagenes_a_salvar)
+            {
+                string filename = Path.GetFileNameWithoutExtension(imageData.ImageName);
+                string filepath = Path.GetDirectoryName(imageData.ImageName); //ruta sin el fichero y sin el slash al final
+                //string filepath2 = Path.GetFullPath(imageData.ImageName);   //ruta con el nombre de fichero
+
+                string save_to_file = filepath + "\\" + filename + ".txt";
+                using (StreamWriter outputFile = new StreamWriter(Path.Combine(filepath, filename + ".txt")))
+                {
+                    string resultado = "";
+                    IEnumerable<Tuple<string, List<string>>> information = imageData.Tags.getFullObjects().Select(x => new Tuple<string, List<string>>( x.Item1, x.Item3));
+                    //se puede quitar la seleccion anterior y trabajar directo con las tuplas resultado
+                    foreach (Tuple<string, List<string>> tupla in information)
+                    {
+                        resultado += tupla.Item1;
+                        resultado += ':';
+                        foreach (string cadena in tupla.Item2)
+                        {
+                            resultado += cadena;
+                            resultado += ',';
+                        }
+                        resultado += "\r";
+                    }
+                    outputFile.Write(resultado);
+                }
+
+            }
+        }
+
+        private void chk_MemorySaver_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        //public delegate List<string> GetObjects(TagStore objeto);
+        //public GetObjects delegado_Objetos = new GetObjects(DelegateGetObjects);
+        //public static List<string> DelegateGetObjects(TagStore TagStoreTemplate1)
+        //{
+        //    return TagStoreTemplate1.getObjects();
+        //}
+
+
 
         /// PASADOS A OTROS SITIOS Y NO USADOS, borrar
         /// 
