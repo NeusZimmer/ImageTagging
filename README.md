@@ -11,14 +11,17 @@ Open a directory containing a group of images, define the number of images to be
 
 
 Examine your images and look for the areas/objects you will need to categorize in general, define a template to be used (you could apply templates to group of images). Apply the template to the desired images. 
-![template](https://github.com/NeusZimmer/ImageTagging/assets/94193584/61c291c0-e316-4b62-ba94-7fd850f5cb2a)
+
+![template](https://github.com/NeusZimmer/ImageTagging/assets/94193584/894fa47d-7d6a-4fe1-a95f-212c2e57fd8c)
+
 
 
 Tags: you may import txt files ( one tag per line) in the right panel, ( i.e.: wildcards txt files while you define your own tag files). Also, if you need a tag that is not included you may add it to the current categorie.
 Tag category: think on the template you applied to the images, you have to define a destination for each of the categories, this will add the selected tags to the selected images, but only if that objetct/area alreay exists in the image template, if not it will be not added. You may use the combo or name it ( case sensitive) if it does not appear in the list
 
 ![tag_load](https://github.com/NeusZimmer/ImageTagging/assets/94193584/c386e772-3bf0-42e0-bec3-4b9611aac48c)
-![Destination](https://github.com/NeusZimmer/ImageTagging/assets/94193584/6281f73a-fd24-473b-930b-2c7ba8a025ec)
+![Destination](https://github.com/NeusZimmer/ImageTagging/assets/94193584/d63ad075-1451-49b7-80b7-2949d3dfd792)
+
 
 
 Select the tags you want to add to selected images and repeat as needed this step.
