@@ -46,8 +46,8 @@ namespace ImageTaggingApp
             textBox_path.Text = System.IO.Directory.GetCurrentDirectory();
             txtCategoriesDir.Text= System.IO.Directory.GetCurrentDirectory();
             SearchTag_controls.SearchField campobusqueda = new SearchTag_controls.SearchField();
-            campobusqueda.Dock = DockStyle.Top;
-            //campobusqueda.Visible = false;
+            campobusqueda.Dock = DockStyle.Fill;
+            campobusqueda.Visible = true;
             tabla_panel_derecho.Controls.Add(campobusqueda, 0, 0);
             //Panel_derecho.Controls.Add(campobusqueda);
             campobusqueda.AddClick += new System.EventHandler(tag_add_click_reveived);

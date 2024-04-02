@@ -3,14 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32602.291
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApp1", "WindowsFormsApp1.csproj", "{CC645FBD-7049-46CB-9CFC-DD3C4CB4FDD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageTaggingApp", "ImageTaggingApp.csproj", "{CC645FBD-7049-46CB-9CFC-DD3C4CB4FDD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Beta1.1|Any CPU = Beta1.1|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC645FBD-7049-46CB-9CFC-DD3C4CB4FDD5}.Beta1.1|Any CPU.ActiveCfg = Beta1.1|Any CPU
+		{CC645FBD-7049-46CB-9CFC-DD3C4CB4FDD5}.Beta1.1|Any CPU.Build.0 = Beta1.1|Any CPU
 		{CC645FBD-7049-46CB-9CFC-DD3C4CB4FDD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CC645FBD-7049-46CB-9CFC-DD3C4CB4FDD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC645FBD-7049-46CB-9CFC-DD3C4CB4FDD5}.Release|Any CPU.ActiveCfg = Release|Any CPU

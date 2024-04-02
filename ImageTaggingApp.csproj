@@ -29,7 +29,7 @@
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <DisallowUrlActivation>true</DisallowUrlActivation>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.1</ApplicationVersion>
+    <ApplicationVersion>1.1.0.1</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -57,16 +57,33 @@
     <StartupObject>ImageTaggingApp.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>05C83DF5CB7D64C0739A1471E99B43E74224FFE3</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B048F697FB5425E541D542C2069B2A86EE5D90C0</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>WindowsFormsApp1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>WindowsFormsApp1_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta1.1|AnyCPU'">
+    <OutputPath>bin\Beta1.1\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -98,9 +115,6 @@
   <ItemGroup>
     <Compile Include="Classes\ImageData.cs" />
     <Compile Include="Classes\ImagePager.cs" />
-    <Compile Include="Controls\SearchField.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="ImageTagging.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,7 +155,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="WindowsFormsApp1_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -165,6 +178,8 @@
   <ItemGroup>
     <None Include="bin\Debug\tag_files\hair-color.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Controls\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

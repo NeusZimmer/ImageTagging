@@ -57,12 +57,12 @@ namespace ImageTaggingApp
             this.TablePanelTags = new System.Windows.Forms.TableLayoutPanel();
             this.PanelImagenTagActivos = new System.Windows.Forms.FlowLayoutPanel();
             this.btn_PrevPage = new System.Windows.Forms.Button();
+            this.btn_NotUsed = new System.Windows.Forms.Button();
             this.btnNextPage = new System.Windows.Forms.Button();
             this.btn_Repagination = new System.Windows.Forms.Button();
             this.btn_SelectAll = new System.Windows.Forms.Button();
             this.btn_Select_None = new System.Windows.Forms.Button();
             this.btn_HideSelected = new System.Windows.Forms.Button();
-            this.btn_NotUsed = new System.Windows.Forms.Button();
             this.btn_Export = new System.Windows.Forms.Button();
             this.btn_save = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
@@ -489,6 +489,19 @@ namespace ImageTaggingApp
             this.btn_PrevPage.UseVisualStyleBackColor = true;
             this.btn_PrevPage.Click += new System.EventHandler(this.btn_PrevPage_Click);
             // 
+            // btn_NotUsed
+            // 
+            this.btn_NotUsed.BackColor = System.Drawing.Color.Transparent;
+            this.btn_NotUsed.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_NotUsed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_NotUsed.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btn_NotUsed.Location = new System.Drawing.Point(120, 3);
+            this.btn_NotUsed.Name = "btn_NotUsed";
+            this.btn_NotUsed.Size = new System.Drawing.Size(114, 23);
+            this.btn_NotUsed.TabIndex = 7;
+            this.btn_NotUsed.Text = "Page X of X";
+            this.btn_NotUsed.UseVisualStyleBackColor = false;
+            // 
             // btnNextPage
             // 
             this.btnNextPage.Location = new System.Drawing.Point(240, 3);
@@ -538,19 +551,6 @@ namespace ImageTaggingApp
             this.btn_HideSelected.Text = "Hide Selected";
             this.btn_HideSelected.UseVisualStyleBackColor = true;
             this.btn_HideSelected.Click += new System.EventHandler(this.btn_HideAllSelected_Click);
-            // 
-            // btn_NotUsed
-            // 
-            this.btn_NotUsed.BackColor = System.Drawing.Color.Transparent;
-            this.btn_NotUsed.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_NotUsed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_NotUsed.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btn_NotUsed.Location = new System.Drawing.Point(120, 3);
-            this.btn_NotUsed.Name = "btn_NotUsed";
-            this.btn_NotUsed.Size = new System.Drawing.Size(114, 23);
-            this.btn_NotUsed.TabIndex = 7;
-            this.btn_NotUsed.Text = "Page X of X";
-            this.btn_NotUsed.UseVisualStyleBackColor = false;
             // 
             // btn_Export
             // 
@@ -669,12 +669,12 @@ namespace ImageTaggingApp
             this.toolStripSelect,
             this.toolStripHide});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(136, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
             // 
             // toolStripSelect
             // 
             this.toolStripSelect.Name = "toolStripSelect";
-            this.toolStripSelect.Size = new System.Drawing.Size(135, 22);
+            this.toolStripSelect.Size = new System.Drawing.Size(180, 22);
             this.toolStripSelect.Text = "Select Only";
             this.toolStripSelect.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolStripSelect.Click += new System.EventHandler(this.toolStripSelect_Click);
@@ -682,7 +682,7 @@ namespace ImageTaggingApp
             // toolStripHide
             // 
             this.toolStripHide.Name = "toolStripHide";
-            this.toolStripHide.Size = new System.Drawing.Size(135, 22);
+            this.toolStripHide.Size = new System.Drawing.Size(180, 22);
             this.toolStripHide.Text = "Hide Image";
             this.toolStripHide.Click += new System.EventHandler(this.toolStripHide_Click);
             // 
